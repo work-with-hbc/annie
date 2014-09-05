@@ -1,0 +1,23 @@
+{
+  "int": {
+    "nested": 42
+  },
+
+  "float": {
+    "nested": 3.14
+  },
+
+  "bool": {
+    "nested": false
+  },
+
+  "string": {
+    "nested": "jsonconfig"
+  },
+
+  "config": {
+    "nested": {
+      "package": "jsonconfig"
+    }
+  }
+}

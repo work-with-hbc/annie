@@ -1,0 +1,9 @@
+{
+  "package": "jsonconfig",
+  "version": {
+    "major": 0,
+    "minor": 0.1
+  },
+  "stable": false,
+  "mantainer": ["hbc <bcxxxxxx@gmail.com>"]
+}
