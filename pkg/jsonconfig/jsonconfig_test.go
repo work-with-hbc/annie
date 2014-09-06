@@ -65,3 +65,42 @@ func TestGetConfig(t *testing.T) {
 		t.Errorf("nested subconfig: got nil")
 	}
 }
+
+func TestGetArrayConfigObj(t *testing.T) {
+	configs, err := LoadFromFile("testdata/array_configs.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	subConfigs := configs.GetArrayConfigObj("sub_configs")
+	if subConfigs == nil {
+		t.Errorf("cannot get array config obj")
+	}
+
+	if len(subConfigs) != configs.GetInt("sub_configs_count") {
+		t.Errorf("get array config obj failed: %q", subConfigs)
+	}
+}
+
+func TestGetDefaultValue(t *testing.T) {
+	configs, err := LoadFromString("{}")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if x := configs.GetDefaultString("not_existed_key", "42"); x != "42" {
+		t.Errorf("get default string failed, expected 42, got %s", x)
+	}
+
+	if x := configs.GetDefaultInt("not_existed_key", 42); x != 42 {
+		t.Errorf("get default int failed, expected 42, got %d", x)
+	}
+
+	if x := configs.GetDefaultFloat("not_existed_key", 42.0); x != 42.0 {
+		t.Errorf("get default int failed, expected 42.0, got %f", x)
+	}
+
+	if x := configs.GetDefaultBool("not_existed_key", true); !x {
+		t.Errorf("get default int failed, expected true, got false")
+	}
+}
