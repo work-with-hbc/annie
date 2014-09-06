@@ -31,6 +31,13 @@ func LoadFromFile(filename string) (*Config, error) {
 	return config, err
 }
 
+func LoadFromString(content string) (*Config, error) {
+	config := newConfig()
+	err := config.parseFromBytes([]byte(content))
+
+	return config, err
+}
+
 func (c *Config) parseFromMap(obj map[string]interface{}) {
 	for k, v := range obj {
 		c.data[k] = v

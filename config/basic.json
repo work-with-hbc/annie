@@ -1,0 +1,10 @@
+{
+  "memory": {
+    "storage": {
+      "provider": "leveldb",
+      "options": {
+        "path": "/tmp/test.ldb"
+      }
+    }
+  }
+}
