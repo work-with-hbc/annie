@@ -16,7 +16,7 @@ var okHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 var echoNameHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	payload := GetInput(r)
+	payload := GetJsonInput(r)
 	if payload == nil {
 		http.Error(w, "not ok", 400)
 		return

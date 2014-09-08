@@ -43,7 +43,7 @@ func JsonRequestHandler(h http.Handler) http.Handler {
 	})
 }
 
-func GetInput(r *http.Request) map[string]interface{} {
+func GetJsonInput(r *http.Request) map[string]interface{} {
 	payload, ok := context.GetOk(r, JSON_REQUEST_BODY_KEY)
 	if !ok {
 		return nil
