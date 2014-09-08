@@ -74,6 +74,45 @@ func TestJsonRequestHandlerTakeInput(t *testing.T) {
 	}
 }
 
+func TestJsonResponseHandler(t *testing.T) {
+	req := newRequest("GET", "/foo", "", t)
+	rec := httptest.NewRecorder()
+	JsonResponseHandler(okHandler).ServeHTTP(rec, req)
+
+	if rec.Code != 200 {
+		t.Errorf("should be ok for request")
+	}
+	contentType := rec.Header().Get("Content-Type")
+	if !strings.HasPrefix(contentType, "application/json") {
+		t.Errorf("should be a application/json response, got: %s", contentType)
+	}
+}
+
+func TestJsonResponse(t *testing.T) {
+	testGroups := []struct {
+		name         string
+		respMaker    func(http.ResponseWriter)
+		expectedCode int
+	}{
+		{"InvalidInput", InvalidInput, 400},
+		{"NotFound", NotFound, 404},
+		{"ServerError", ServerError, 500},
+	}
+
+	for _, group := range testGroups {
+		rec := httptest.NewRecorder()
+		group.respMaker(rec)
+		if rec.Code != group.expectedCode {
+			t.Errorf(
+				"%s failed expected %d got %d",
+				group.name,
+				group.expectedCode,
+				rec.Code,
+			)
+		}
+	}
+}
+
 func TestHandlerUse(t *testing.T) {
 	req := newRequest("GET", "/foo", "{\"name\": \"foo\"}", t)
 	rec := httptest.NewRecorder()
