@@ -1,3 +1,4 @@
 Godeps/*
 !Godeps/Godeps.json
 annie
+*.local
