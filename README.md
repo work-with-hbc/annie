@@ -1,7 +1,7 @@
 annie
 =====
 
-[![Build Status](https://travis-ci.org/work-with-hbc/annie.svg?branch=master)](https://travis-ci.org/bcho/annie)
+[![Build Status](https://travis-ci.org/work-with-hbc/annie.svg?branch=master)](https://travis-ci.org/work-with-hbc/annie)
 
 
 Annie from Community. She talks to me.
