@@ -1,0 +1,20 @@
+{
+  "name": "annie-coffee",
+  "version": "0.0.1",
+  "description": "Simple HTTP client binding for annie.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "annie",
+    "http",
+    "client"
+  ],
+  "author": "hbc <bcxxxxxx@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-script": "^1.8.0",
+    "duo": "^0.8.4"
+  }
+}
