@@ -5,9 +5,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/bcho/annie/pkg/brain"
-	"github.com/bcho/annie/pkg/gateway"
-	"github.com/bcho/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/brain"
+	"github.com/work-with-hbc/annie/pkg/gateway"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 const DEFAULT_CONFIG = "config/basic.json"

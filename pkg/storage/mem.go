@@ -7,7 +7,7 @@ package storage
 import (
 	"errors"
 
-	"github.com/bcho/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 type MemStorage struct {

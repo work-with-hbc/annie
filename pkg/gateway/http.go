@@ -9,8 +9,8 @@ import (
 	"log"
 	"net/http"
 
-	httpApi "github.com/bcho/annie/pkg/behaviour/http"
-	"github.com/bcho/annie/pkg/jsonconfig"
+	httpApi "github.com/work-with-hbc/annie/pkg/behaviour/http"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 
 	"github.com/gorilla/mux"
 )

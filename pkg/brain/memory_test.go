@@ -7,7 +7,7 @@ package brain
 import (
 	"testing"
 
-	"github.com/bcho/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 func TestBasic(t *testing.T) {

@@ -5,7 +5,7 @@ Storage provider.
 package storage
 
 import (
-	"github.com/bcho/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 type Storage interface {

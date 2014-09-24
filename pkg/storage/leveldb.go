@@ -7,8 +7,8 @@ package storage
 import (
 	"log"
 
-	"github.com/bcho/annie/pkg/jsonconfig"
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 type LevelDBStorage struct {

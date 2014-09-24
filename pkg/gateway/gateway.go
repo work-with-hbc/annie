@@ -5,7 +5,7 @@ Gateway defination.
 package gateway
 
 import (
-	"github.com/bcho/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
 )
 
 type GatewayServiceStarter func(config *jsonconfig.Config)

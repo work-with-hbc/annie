@@ -1,6 +1,6 @@
 .PHONY: test
 
-prefix=github.com/bcho/annie/pkg/
+prefix=github.com/work-with-hbc/annie/pkg/
 packages=brain jsonconfig storage utils/http
 
 test:

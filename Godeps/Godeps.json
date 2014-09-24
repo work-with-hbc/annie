@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/bcho/annie",
+	"ImportPath": "github.com/work-with-hbc/annie",
 	"GoVersion": "go1.3.1",
 	"Deps": [
 		{

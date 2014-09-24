@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/bcho/annie/pkg/brain"
-	ahttp "github.com/bcho/annie/pkg/utils/http"
 	"github.com/gorilla/mux"
+	"github.com/work-with-hbc/annie/pkg/brain"
+	ahttp "github.com/work-with-hbc/annie/pkg/utils/http"
 )
 
 func rememberSomething(w http.ResponseWriter, r *http.Request) {

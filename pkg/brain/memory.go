@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"code.google.com/p/go-uuid/uuid"
-	"github.com/bcho/annie/pkg/jsonconfig"
-	"github.com/bcho/annie/pkg/storage"
+	"github.com/work-with-hbc/annie/pkg/jsonconfig"
+	"github.com/work-with-hbc/annie/pkg/storage"
 )
 
 type MemoryManager struct {
