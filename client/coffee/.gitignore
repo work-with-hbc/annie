@@ -1,3 +1,5 @@
 components/
 node_modules/
 build/
+*.js
+!dist/annie.js

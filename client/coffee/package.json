@@ -14,7 +14,13 @@
   "author": "hbc <bcxxxxxx@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "browserify": "^5.12.0",
     "coffee-script": "^1.8.0",
-    "duo": "^0.8.4"
+    "mocha": "^1.21.4",
+    "should": "^4.0.4",
+    "uglify-js": "^2.4.15"
+  },
+  "dependencies": {
+    "jquery": "^2.1.1"
   }
 }

@@ -1,4 +1,5 @@
-child_process = require "child_process"
+child_process = require 'child_process'
+join = (require 'path').join
 
 spawn = (procName, opts, silent=false) ->
   proc = child_process.spawn procName, opts
@@ -8,5 +9,21 @@ spawn = (procName, opts, silent=false) ->
   proc
 
 
-task 'build', 'build usable js file with duo', ->
-  spawn 'coffee', ['index.coffee']
+task 'build', 'build publish js file with duo', ->
+  toDest = (fname) ->
+    join __dirname, 'dist', fname
+
+  compiled = toDest 'annie.compiled.js'
+  target = toDest 'annie.js'
+
+  spawn 'coffee', ['-c', 'annie.coffee']
+  spawn './node_modules/browserify/bin/cmd.js', ['annie.js', '-o', compiled]
+  spawn './node_modules/uglify-js/bin/uglifyjs', [compiled, '-o', target]
+
+
+task 'autocompile', 'auto compile coffee to js', ->
+  spawn 'coffee', ['-cw', __dirname]
+
+
+task 'test', 'run test', ->
+  spawn './node_modules/mocha/bin/mocha'
