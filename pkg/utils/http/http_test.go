@@ -113,6 +113,41 @@ func TestJsonResponse(t *testing.T) {
 	}
 }
 
+func TestCORSHeaderWithNormalRequest(t *testing.T) {
+	req := newRequest("GET", "/foo", "", t)
+	rec := httptest.NewRecorder()
+	CORSHeaderHandler(okHandler).ServeHTTP(rec, req)
+
+	if rec.Code != 200 {
+		t.Errorf("should be ok for normal request")
+	}
+	if rec.Header().Get("Access-Control-Allow-Origin") != "*" {
+		t.Errorf("should have ACAO header in response")
+	}
+}
+
+func TestCORSHeaderWithPreflightRequest(t *testing.T) {
+	req := newRequest("OPTIONS", "/foo", "", t)
+
+	testMethod := "TEST"
+	req.Header.Set("Access-Control-Request-Method", testMethod)
+
+	rec := httptest.NewRecorder()
+	CORSHeaderHandler(okHandler).ServeHTTP(rec, req)
+
+	if rec.Code != 200 {
+		t.Errorf("should be ok for preflight request")
+	}
+	if rec.Header().Get("Access-Control-Allow-Origin") != "*" {
+		t.Errorf("should have ACAO header in response")
+	}
+
+	allowedMethod := rec.Header().Get("Access-Control-Allow-Method")
+	if allowedMethod != testMethod {
+		t.Errorf("should allow method %s, got %s", testMethod, allowedMethod)
+	}
+}
+
 func TestHandlerUse(t *testing.T) {
 	req := newRequest("GET", "/foo", "{\"name\": \"foo\"}", t)
 	rec := httptest.NewRecorder()

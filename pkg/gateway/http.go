@@ -11,12 +11,16 @@ import (
 
 	httpApi "github.com/work-with-hbc/annie/pkg/behaviour/http"
 	"github.com/work-with-hbc/annie/pkg/jsonconfig"
+	ahttp "github.com/work-with-hbc/annie/pkg/utils/http"
 
 	"github.com/gorilla/mux"
 )
 
 func StartHTTPGateway(config *jsonconfig.Config) {
-	http.Handle("/", setupRoute())
+	http.Handle("/", ahttp.HandlerUse(
+		setupRoute(),
+		ahttp.CORSHeaderHandler,
+	))
 
 	dest := fmt.Sprintf(
 		"%s:%d",
