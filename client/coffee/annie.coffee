@@ -1,4 +1,7 @@
-root = exports ? window.Annie
+if window?
+  root = window
+else
+  root = exports
 
 $ = jquery = require 'jquery'
 
@@ -10,15 +13,34 @@ Annie =
 
   setBaseUrl: (@baseUrl) ->
 
-  getBaseUrl: -> @baseUrl
+  getBaseUrl: (part='') -> "#{@baseUrl}/#{part}"
 
+
+  # Thing API
   thing:
 
-    get: (id) ->
-      console.log $
+    getThingUrl: (part='') -> Annie.getBaseUrl("thing/#{part}")
 
-    store: (thing) ->
-      console.log $
+    # Try to retrieve thing from annie.
+    get: (id, onSuccess, onError) ->
+      xhr = $.get @getThingUrl "#{id}"
+
+      xhr.success (data) => onSuccess @parseGetThingResp data
+      xhr.fail onError if onError?
+
+    # Store thing to annie.
+    store: (thing, onSuccess, onError) ->
+      xhr = $.ajax
+        url: @getThingUrl()
+        method: 'POST'
+        contentType: 'application/json'
+        data: JSON.stringify thing: thing
+
+      xhr.success (data) => onSuccess @parseSetThingResp data
+      xhr.fail onError if onError?
+
+    parseGetThingResp: (data) -> data.value
+    parseSetThingResp: (data) -> data.id
 
 
 root.Annie = Annie

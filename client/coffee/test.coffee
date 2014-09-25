@@ -6,10 +6,10 @@ describe 'Annie basic usage', ->
 
   describe 'base url', ->
     it 'should return given url after set base url', ->
-      baseUrl = 'http://annie.test'
+      baseUrl = 'http://annie.test/api/v1'
       
       Annie.setBaseUrl baseUrl
-      baseUrl.should.be.exactly Annie.getBaseUrl()
+      Annie.getBaseUrl().should.be.exactly "#{baseUrl}/"
 
 describe 'Annie thing API', ->
 
