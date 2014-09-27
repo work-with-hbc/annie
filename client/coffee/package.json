@@ -1,6 +1,6 @@
 {
   "name": "annie-coffee",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple HTTP client binding for annie.",
   "main": "index.coffee",
   "scripts": {

@@ -34,12 +34,12 @@ Annie =
         url: @getThingUrl()
         method: 'POST'
         contentType: 'application/json'
-        data: JSON.stringify thing: thing
+        data: JSON.stringify thing: JSON.stringify thing
 
       xhr.success (data) => onSuccess @parseSetThingResp data
       xhr.fail onError if onError?
 
-    parseGetThingResp: (data) -> data.value
+    parseGetThingResp: (data) -> JSON.parse data.value
     parseSetThingResp: (data) -> data.id
 
 
