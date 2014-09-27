@@ -1,4 +1,5 @@
 child_process = require 'child_process'
+_exec = child_process.exec
 join = (require 'path').join
 
 spawn = (procName, opts, silent=false) ->
@@ -8,6 +9,9 @@ spawn = (procName, opts, silent=false) ->
     proc.stderr.on 'data', (data) -> process.stderr.write data
   proc
 
+exec = (cmd, cb) ->
+  _exec cmd, cb
+
 
 task 'build', 'build publish js file with browserify', ->
   toDest = (fname) ->
@@ -16,9 +20,12 @@ task 'build', 'build publish js file with browserify', ->
   compiled = toDest 'annie.compiled.js'
   target = toDest 'annie.js'
 
-  spawn 'coffee', ['-c', 'annie.coffee']
-  spawn './node_modules/browserify/bin/cmd.js', ['annie.js', '-o', compiled]
-  spawn './node_modules/uglify-js/bin/uglifyjs', [compiled, '-o', target]
+  cmds = [
+    'coffee -c annie.coffee'
+    "./node_modules/browserify/bin/cmd.js annie.js -o #{compiled}"
+    "./node_modules/uglify-js/bin/uglifyjs #{compiled} -o #{target}"
+  ]
+  exec cmds.join "&&"
 
 
 task 'autocompile', 'auto compile coffee to js', ->
