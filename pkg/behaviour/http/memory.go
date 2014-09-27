@@ -5,13 +5,22 @@ Memory service through http.
 package http
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/work-with-hbc/annie/pkg/brain"
 	ahttp "github.com/work-with-hbc/annie/pkg/utils/http"
 )
+
+type rememberSomethingResponse struct {
+	Id string `json:"id"`
+}
+
+type getSomethingByIdResponse struct {
+	Id    string `json:"id"`
+	Value string `json:"value"`
+}
 
 func rememberSomething(w http.ResponseWriter, r *http.Request) {
 	payload := ahttp.GetJsonInput(r)
@@ -32,8 +41,16 @@ func rememberSomething(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	resp := new(rememberSomethingResponse)
+	resp.Id = itemId
+	rv, err := json.Marshal(resp)
+	if err != nil {
+		ahttp.ServerError(w)
+		return
+	}
+
 	w.WriteHeader(201)
-	fmt.Fprintf(w, "{\"id\": \"%s\"}", itemId)
+	w.Write(rv)
 }
 
 func getSomethingById(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +65,17 @@ func getSomethingById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "{\"id\": \"%s\", \"value\": \"%s\"}", itemId, item.(string))
+	resp := new(getSomethingByIdResponse)
+	resp.Id = itemId
+	resp.Value = item.(string)
+	rv, err := json.Marshal(resp)
+	if err != nil {
+		ahttp.ServerError(w)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(rv)
 }
 
 var (

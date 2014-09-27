@@ -1,7 +1,7 @@
 .PHONY: test install
 
 prefix=github.com/work-with-hbc/annie/pkg/
-packages=brain jsonconfig storage utils/http
+packages=brain jsonconfig storage utils/http behaviour/http
 clients=client
 
 test: test-packages test-clients
