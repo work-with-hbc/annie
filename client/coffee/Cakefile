@@ -9,7 +9,7 @@ spawn = (procName, opts, silent=false) ->
   proc
 
 
-task 'build', 'build publish js file with duo', ->
+task 'build', 'build publish js file with browserify', ->
   toDest = (fname) ->
     join __dirname, 'dist', fname
 
