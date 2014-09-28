@@ -58,6 +58,21 @@ func (m MemoryManager) Remember(something interface{}) (string, error) {
 	return itemId, nil
 }
 
+// Write something to storage with name.
+// Returns `false` if the name has been used and `overwrite` didn't set.
+func (m MemoryManager) RememberWithName(name string, something interface{}, overwrite bool) (bool, error) {
+	if m.storage.Has(name) && !overwrite {
+		return false, nil
+	}
+
+	err := m.writeToStorage(name, something)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 func (m MemoryManager) GetFromId(id string) (interface{}, error) {
 	return m.getFromStorage(id)
 }
