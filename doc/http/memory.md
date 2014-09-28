@@ -22,6 +22,29 @@ Status 201 Created
 }
 ```
 
+## Store a thing with custom ID.
+
+```
+PUT /thing/:id
+```
+
+
+### JSON Input
+
+| Name | Type | Description |
+|:--------:|:--------:|:---------------:|
+| thing | string | **Required**. The thing you want to remember. |
+
+
+### Response
+
+```
+Status 201 Created
+{
+  "id": "custom-key"
+}
+```
+
 
 ## Retrieve a thing by ID.
 

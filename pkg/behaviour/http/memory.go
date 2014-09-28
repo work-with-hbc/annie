@@ -53,6 +53,43 @@ func rememberSomething(w http.ResponseWriter, r *http.Request) {
 	w.Write(rv)
 }
 
+func rememberSomethingWithName(w http.ResponseWriter, r *http.Request) {
+	memory := brain.GetMemoryManager()
+
+	vars := mux.Vars(r)
+	itemId := vars["id"]
+
+	payload := ahttp.GetJsonInput(r)
+	if payload == nil {
+		ahttp.InvalidInput(w)
+		return
+	}
+
+	something, ok := payload["thing"]
+	if !ok {
+		ahttp.InvalidInput(w)
+		return
+	}
+
+	// Always overwrite the key.
+	stored, err := memory.RememberWithName(itemId, something.(string), true)
+	if !stored || err != nil {
+		ahttp.ServerError(w)
+		return
+	}
+
+	resp := new(rememberSomethingResponse)
+	resp.Id = itemId
+	rv, err := json.Marshal(resp)
+	if err != nil {
+		ahttp.ServerError(w)
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(rv)
+}
+
 func getSomethingById(w http.ResponseWriter, r *http.Request) {
 	memory := brain.GetMemoryManager()
 	vars := mux.Vars(r)
@@ -81,6 +118,12 @@ func getSomethingById(w http.ResponseWriter, r *http.Request) {
 var (
 	RememberSomething = ahttp.HandlerFuncUse(
 		rememberSomething,
+		ahttp.JsonRequestHandler,
+		ahttp.JsonResponseHandler,
+	)
+
+	RememberSomethingWithName = ahttp.HandlerFuncUse(
+		rememberSomethingWithName,
 		ahttp.JsonRequestHandler,
 		ahttp.JsonResponseHandler,
 	)

@@ -117,3 +117,25 @@ func TestMemoryWithComplicateInput(t *testing.T) {
 	id := getIdFromBody(rec.Body.String(), t)
 	expectThingEqual(id, thing, t)
 }
+
+func TestRememberWithName(t *testing.T) {
+	setupBrain(t)
+
+	thingId := "test_key"
+	thing := "this_is_a_simple_string"
+	req := newRequest("PUT", "/"+thingId, makeInput(thing, t), t)
+	rec := httptest.NewRecorder()
+
+	route := mux.NewRouter()
+	route.Handle("/{id}", RememberSomethingWithName).Methods("PUT")
+	route.ServeHTTP(rec, req)
+	if rec.Code != 200 {
+		t.Errorf("should be 200 to remember something with name, got %d", rec.Code)
+	}
+
+	id := getIdFromBody(rec.Body.String(), t)
+	if id != thingId {
+		t.Errorf("stored item id should be %s, got %s", thingId, id)
+	}
+	expectThingEqual(id, thing, t)
+}
