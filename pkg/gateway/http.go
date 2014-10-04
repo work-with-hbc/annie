@@ -37,8 +37,14 @@ func setupRoute() *mux.Router {
 
 	thingRoute := apiRoute.PathPrefix("/thing").Subrouter()
 	thingRoute.Handle("/{id}", httpApi.GetSomethingById).Methods("GET")
-	thingRoute.Handle("/{id}", httpApi.RememberSomethingWithName).Methods("PUT")
+	thingRoute.Handle("/{id}", httpApi.RememberSomethingById).Methods("PUT")
 	thingRoute.Handle("/", httpApi.RememberSomething).Methods("POST")
+
+	listOfThingRoute := apiRoute.PathPrefix("/list/thing").Subrouter()
+	listOfThingRoute.Handle("/{id}", httpApi.GetListById).Methods("GET")
+	listOfThingRoute.Handle("/{id}", httpApi.RememberListById).Methods("PUT")
+	listOfThingRoute.Handle("/{id}/item", httpApi.PushSomethingToListById).Methods("PUT")
+	listOfThingRoute.Handle("/", httpApi.RememberList).Methods("POST")
 
 	return route
 }

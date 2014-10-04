@@ -26,78 +26,167 @@ func setupMemoryManager(t *testing.T) *MemoryManager {
 	return manager
 }
 
-func TestBasic(t *testing.T) {
+func TestMananger(t *testing.T) {
 	manager := setupMemoryManager(t)
 
 	if manager != GetMemoryManager() {
 		t.Errorf("manager should be singleton")
 	}
+}
 
-	key, err := manager.Remember("foobar")
-	if err != nil {
-		t.Errorf("cannot remember")
+// TODO
+func TestList(t *testing.T) {}
+
+func TestHas(t *testing.T) {
+	manager := setupMemoryManager(t)
+
+	key := "test"
+	item := []byte("test")
+
+	if manager.Has(key) {
+		t.Errorf("should not have key: %s", key)
 	}
 
-	thing, err := manager.GetFromId(key)
-	if err != nil {
-		t.Errorf("cannot get from key %s", key)
-	}
-	if thing.(string) != "foobar" {
-		t.Errorf("get: expected foobar got %q", thing)
+	if err := manager.writeToStorageByKey(key, item); err != nil {
+		t.Fatal(err)
 	}
 
-	err = manager.Forget(key)
-	if err != nil {
-		t.Errorf("cannot forget key %s", key)
-	}
-	_, err = manager.GetFromId(key)
-	if err == nil {
-		t.Errorf("cannot forget %s: %q", key, err)
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
 	}
 }
 
-func TestRememberWithName(t *testing.T) {
+func TestForget(t *testing.T) {
 	manager := setupMemoryManager(t)
 
-	var (
-		set       bool
-		err       error
-		retrieved interface{}
-	)
+	key := "test"
+	item := []byte("test")
 
-	name := "test_key"
-	thing := "test_thing"
-	thingOverwrite := "test_thing_overwrite"
-
-	set, err = manager.RememberWithName(name, thing, false)
-	if !set || err != nil {
-		t.Errorf("cannot remember with name")
+	if err := manager.writeToStorageByKey(key, item); err != nil {
+		t.Fatal(err)
 	}
 
-	set, err = manager.RememberWithName(name, thing, false)
-	if set {
-		t.Errorf("it should not overwrite the memory")
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
 	}
+
+	if err := manager.Forget(key); err != nil {
+		t.Fatal(err)
+	}
+
+	if manager.Has(key) {
+		t.Errorf("should not have key: %s", key)
+	}
+}
+
+func TestStoreStringByKey(t *testing.T) {
+	manager := setupMemoryManager(t)
+
+	key := "test"
+	item := "test"
+
+	if err := manager.StoreStringByKey(key, item); err != nil {
+		t.Fatal(err)
+	}
+
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
+	}
+
+	stored, err := manager.GetString(key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stored != item {
+		t.Errorf("expected: %s, got: %s", item, stored)
+	}
+}
+
+func TestStoreString(t *testing.T) {
+	manager := setupMemoryManager(t)
+
+	item := "test"
+
+	key, err := manager.StoreString(item)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	set, err = manager.RememberWithName(name, thingOverwrite, true)
-	if !set || err != nil {
-		t.Errorf("cannot overwrite it")
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
 	}
-	retrieved, err = manager.GetFromId(name)
+
+	stored, err := manager.GetString(key)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if retrieved.(string) != thingOverwrite {
-		t.Errorf("get: expected %s got %q", thingOverwrite, retrieved)
+	if stored != item {
+		t.Errorf("expected: %s, got: %s", item, stored)
+	}
+}
+
+func TestStoreListByKey(t *testing.T) {
+	manager := setupMemoryManager(t)
+
+	key := "test"
+	items := []string{
+		"test1",
+		"test2",
 	}
 
-	err = manager.Forget(name)
-	if err != nil {
-		t.Errorf("cannot forget key %s", name)
+	if err := manager.StoreListByKey(key, items); err != nil {
 		t.Fatal(err)
 	}
 
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
+	}
+
+	var stored []string
+	err := manager.GetList(key, &stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i, item := range items {
+		if item != stored[i] {
+			t.Errorf("expected: %s, got: %s", item, stored)
+		}
+	}
+}
+
+func TestPushList(t *testing.T) {
+	manager := setupMemoryManager(t)
+
+	key := "test"
+	items := []string{
+		"test1",
+		"test2",
+	}
+	pushed := "test3"
+
+	if err := manager.StoreListByKey(key, items); err != nil {
+		t.Fatal(err)
+	}
+
+	if !manager.Has(key) {
+		t.Errorf("must have key: %s", key)
+	}
+
+	items = append(items, pushed)
+	if err := manager.PushList(key, pushed); err != nil {
+		t.Fatal(err)
+	}
+
+	var stored []string
+	err := manager.GetList(key, &stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i, item := range items {
+		if item != stored[i] {
+			t.Errorf("expected: %s, got: %s", item, stored)
+		}
+	}
 }
