@@ -18,7 +18,7 @@ func handlePreflightRequest(w http.ResponseWriter, r *http.Request) {
 
 	requestMethod := r.Header.Get("Access-Control-Request-Method")
 	if requestMethod != "" {
-		w.Header().Set("Access-Control-Allow-Method", requestMethod)
+		w.Header().Set("Access-Control-Allow-Methods", requestMethod)
 	}
 
 	requestHeaders := r.Header.Get("Access-Control-Request-Headers")

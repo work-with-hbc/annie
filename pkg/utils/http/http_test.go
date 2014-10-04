@@ -142,7 +142,7 @@ func TestCORSHeaderWithPreflightRequest(t *testing.T) {
 		t.Errorf("should have ACAO header in response")
 	}
 
-	allowedMethod := rec.Header().Get("Access-Control-Allow-Method")
+	allowedMethod := rec.Header().Get("Access-Control-Allow-Methods")
 	if allowedMethod != testMethod {
 		t.Errorf("should allow method %s, got %s", testMethod, allowedMethod)
 	}
